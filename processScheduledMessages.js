@@ -1,22 +1,18 @@
-const processScheduledMessages = (scheduledMessages, bot) => {
-  const indexesToRemove = [];
+const { Sequelize } = require("sequelize");
 
-  scheduledMessages.forEach(async (msg, index) => {
-    if (msg.date < Date.now()) {
-      indexesToRemove.push(index);
-      await bot.sendMessage(msg.chatId, msg.post);
-    }
-  });
+const processScheduledMessages = async (bot, Message) => {
+  try {
+    const messages = await Message.findAll();
 
-  if (indexesToRemove.length > 0) {
-    scheduledMessages = scheduledMessages.filter((msg, index) => {
-      if (!indexesToRemove.includes(index)) {
-        return msg;
+    messages.forEach(async (msg) => {
+      if (new Date(msg.date) < Date.now()) {
+        bot.sendMessage(msg.chatId, msg.post);
+        Message.destroy({ where: { id: msg.id } });
       }
     });
+  } catch (error) {
+    console.log(error);
   }
-
-  return scheduledMessages;
 };
 
 module.exports = processScheduledMessages;
