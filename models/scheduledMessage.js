@@ -1,8 +1,9 @@
 class ScheduledMessage {
-  constructor(date, post, chatId) {
+  constructor(date, chatId, channelId, media) {
     this.date = date;
-    this.post = post;
     this.chatId = chatId;
+    this.channelId = channelId;
+    this.media = JSON.stringify(media);
   }
 }
 

@@ -6,7 +6,7 @@ const configureDb = () => {
 
   db.serialize(() => {
     db.run(
-      "CREATE TABLE IF NOT EXISTS ScheduledMessages (id INTEGER PRIMARY KEY, post TEXT, date TEXT, chatId INTEGER, createdAt TEXT, updatedAt TEXT)"
+      "CREATE TABLE IF NOT EXISTS ScheduledMessages (id INTEGER PRIMARY KEY, date TEXT, chatId INTEGER, channelId INTEGER, media TEXT, createdAt TEXT, updatedAt TEXT)"
     );
   });
 
@@ -16,11 +16,12 @@ const configureDb = () => {
   });
 
   const Message = sequelize.define("ScheduledMessage", {
-    post: DataTypes.TEXT,
     date: DataTypes.TEXT,
     chatId: DataTypes.INTEGER,
+    channelId: DataTypes.INTEGER,
+    media: DataTypes.TEXT,
   });
-  
+
   return { sequelize, Message };
 };
 
