@@ -69,6 +69,7 @@ bot.on("message", async (msg) => {
           post.media
         )
       );
+      inMemoryPosts = inMemoryPosts.filter((post) => post.chatId !== chatId);
     } else {
       bot.sendMessage(
         chatId,

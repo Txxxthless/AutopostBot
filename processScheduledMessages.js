@@ -16,6 +16,7 @@ const processScheduledMessages = async (bot, Message) => {
     messages.forEach(async (msg) => {
       if (new Date(msg.date) < Date.now()) {
         const media = JSON.parse(msg.media);
+        console.log("=============================MEDIA===============================", media);
 
         media.forEach((element, index) => {
           download(
