@@ -1,16 +1,12 @@
-const axios = require("axios");
-
-const processMessage = async (msg, bot) => {
+const processMessage = async (msg) => {
   if (msg.caption || msg.photo) {
     const caption = msg.caption ? msg.caption : null;
 
     const element = msg.photo.pop();
 
-    const url = await bot.getFileLink(element.file_id);
-
     const result = {
       type: "photo",
-      media: url,
+      media: element.file_id,
     };
 
     if (caption) {

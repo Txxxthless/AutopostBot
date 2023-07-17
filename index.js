@@ -69,7 +69,15 @@ bot.on("message", async (msg) => {
           post.media
         )
       );
+
       inMemoryPosts = inMemoryPosts.filter((post) => post.chatId !== chatId);
+
+      bot.sendMessage(
+        chatId,
+        `👍 I've got your post. Date: ${new Date(
+          post.postDate
+        ).toDateString()}.`
+      );
     } else {
       bot.sendMessage(
         chatId,
@@ -84,6 +92,7 @@ bot.on("message", async (msg) => {
   if (post) {
     const processedMessage = await processMessage(msg, bot);
     post.media.push(processedMessage);
+    bot.sendMessage(chatId, "✨ Type /end to complete the creation.");
   } else {
     bot.sendMessage(chatId, "❌ You first need to call [ /create DATE TIME ]");
   }
