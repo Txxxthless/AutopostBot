@@ -15,6 +15,11 @@ const processMessage = async (msg) => {
 
     return result;
   }
+
+  if (msg.text) {
+    const result = msg.text;
+    return result;
+  }
 };
 
 module.exports = processMessage;
