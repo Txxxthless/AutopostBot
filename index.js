@@ -1,9 +1,10 @@
 const TelegramApi = require("node-telegram-bot-api");
 const ScheduledMessage = require("./models/scheduledMessage");
-const { token, chat } = require("./secret");
+const { token, chat, allowedUsers } = require("./secret");
 const processScheduledMessages = require("./processScheduledMessages");
 const configureDb = require("./configureDb");
 const processMessage = require("./processMessage");
+const styleText = require("./text-styling/index");
 
 const bot = new TelegramApi(token, { polling: true });
 let inMemoryPosts = [];
@@ -19,11 +20,23 @@ const isInMemoryPost = (chatId) => {
 };
 
 bot.on("message", async (msg) => {
+  const username = msg.from.username;
+
   const text = msg.text ? msg.text : null;
   const chatId = msg.chat.id;
 
+  bot.sendMessage(chatId, styleText(msg.text, msg.entities), {
+    parse_mode: "MarkdownV2",
+  });
+
   const channel = await bot.getChat(chat);
   const channelId = channel.id;
+
+  if (!allowedUsers.includes(username)) {
+    console.log(msg);
+    bot.sendMessage(chatId, "❌ You are not allowed to use this bot.");
+    return;
+  }
 
   if (text && text.startsWith("/create")) {
     const [date, time] = text.replace("/create ", "").split(" ");
