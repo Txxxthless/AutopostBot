@@ -27,7 +27,7 @@ const processMediaGroup = async (bot, msg, Message) => {
 };
 
 const processTextMessage = async (bot, msg, Message) => {
-  await bot.sendMessage(msg.channelId, msg.media);
+  await bot.sendMessage(msg.channelId, msg.media, { parse_mode: "MarkdownV2" });
   await Message.destroy({ where: { id: msg.id } });
 };
 

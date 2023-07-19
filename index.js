@@ -4,7 +4,6 @@ const { token, chat, allowedUsers } = require("./secret");
 const processScheduledMessages = require("./processScheduledMessages");
 const configureDb = require("./configureDb");
 const processMessage = require("./processMessage");
-const styleText = require("./text-styling/index");
 
 const bot = new TelegramApi(token, { polling: true });
 let inMemoryPosts = [];
@@ -24,10 +23,6 @@ bot.on("message", async (msg) => {
 
   const text = msg.text ? msg.text : null;
   const chatId = msg.chat.id;
-
-  bot.sendMessage(chatId, styleText(msg.text, msg.entities), {
-    parse_mode: "MarkdownV2",
-  });
 
   const channel = await bot.getChat(chat);
   const channelId = channel.id;

@@ -1,3 +1,5 @@
+const styleText = require("./text-styling/index");
+
 const processMessage = async (msg) => {
   if (msg.caption || msg.photo) {
     const caption = msg.caption ? msg.caption : null;
@@ -10,14 +12,15 @@ const processMessage = async (msg) => {
     };
 
     if (caption) {
-      result.caption = caption;
+      result.caption = styleText(caption, msg.caption_entities);
+      result.parse_mode = "MarkdownV2";
     }
 
     return result;
   }
 
   if (msg.text) {
-    const result = msg.text;
+    const result = styleText(msg.text, msg.entities);
     return result;
   }
 };
